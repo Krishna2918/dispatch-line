@@ -2,12 +2,11 @@ import Link from "next/link";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import { TryDemoButton } from "@/components/marketing/TryDemoButton";
 import {
-  COMPANY_LINE_FULL,
-  COMPANY_LINE_NAME,
-  COMPANY_LINE_PHONE,
-  MANUFACTURER,
-  PRODUCT_NAME,
-} from "@/lib/site";
+  businessPhonePlaceholder,
+  companyLineFullPlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
+import { MANUFACTURER, PRODUCT_NAME } from "@/lib/site";
 
 const features = [
   {
@@ -20,7 +19,7 @@ const features = [
   },
   {
     title: "One company line",
-    copy: `Drivers text their own phone. They only see the company line (demo placeholder: ${COMPANY_LINE_FULL}). Staff names never leave the desk.`,
+    copy: `Drivers text their own phone. They only see the company line (demo placeholder: ${companyLineFullPlaceholder}). Staff names never leave the desk.`,
   },
   {
     title: "Groups & filters",
@@ -58,8 +57,8 @@ export default function Home() {
         >
           {PRODUCT_NAME} is the company text desk. Staff keep their own logins.
           Drivers never install an app — they text the company line and stay in
-          one thread. The demo uses {COMPANY_LINE_NAME} at {COMPANY_LINE_PHONE}{" "}
-          as a placeholder example, not the product name.
+          one thread. The demo uses placeholder company {companyNamePlaceholder}{" "}
+          / {businessPhonePlaceholder} — not the product name.
         </p>
 
         <div
@@ -100,7 +99,7 @@ export default function Home() {
             [
               "02",
               "Drivers text the line",
-              `A driver uses their personal phone. They only see the company line (demo placeholder: ${COMPANY_LINE_FULL}) — never a staff list.`,
+              `A driver uses their personal phone. They only see the company line (demo placeholder: ${companyLineFullPlaceholder}) — never a staff list.`,
             ],
             [
               "03",

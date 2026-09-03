@@ -2,9 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { CompanyLineFields } from "@/components/marketing/CompanyLineFields";
 import { SeatStepper } from "@/components/marketing/SeatStepper";
 import { PricingFinePrint, PricingHighlights } from "@/components/marketing/PricingHighlights";
 import { useSeatQuery } from "@/hooks/useSeatQuery";
+import {
+  businessPhonePlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
 import { formatCad, monthlyTotalCad, PRICE_CURRENCY, PRICE_PER_USER_CAD } from "@/lib/pricing";
 import { PRODUCT_NAME } from "@/lib/site";
 
@@ -67,6 +72,16 @@ export function PayView() {
               {PRODUCT_NAME} · {formatCad(PRICE_PER_USER_CAD)} {PRICE_CURRENCY}
             </p>
             <PricingHighlights />
+            <div className="mt-8 space-y-2">
+              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+                Company line
+              </p>
+              <p className="text-[13px] leading-5 text-muted">
+                Demo fill-ins — not the {PRODUCT_NAME} brand. Placeholder company{" "}
+                {companyNamePlaceholder} / {businessPhonePlaceholder}.
+              </p>
+              <CompanyLineFields idPrefix="pay" />
+            </div>
             <div className="mt-8">
               <SeatStepper seats={seats} onChange={setSeats} id="checkout-seats" />
             </div>

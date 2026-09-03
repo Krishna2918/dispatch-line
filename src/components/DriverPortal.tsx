@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  BUSINESS_LINE_FULL,
-  BUSINESS_LINE_NAME,
-  BUSINESS_LINE_PHONE,
-  DriverPhone,
-  JOHN_STORY_CHIP,
-} from "@/components/DriverPhone";
+import { DriverPhone, JOHN_STORY_CHIP } from "@/components/DriverPhone";
 import { D_JOHN, DEMO_DRIVERS } from "@/lib/demo-data";
+import {
+  businessPhonePlaceholder,
+  companyLineFullPlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
 import { getDemoStore } from "@/lib/demo-store";
 import type { Driver, InboxSnapshot, Message } from "@/lib/types";
 
@@ -138,7 +137,7 @@ export function DriverPortal() {
               Driver phone · Demo
             </p>
             <p className="text-[13px] text-white/55">
-              One chat: {BUSINESS_LINE_NAME}. Notes stay on the desk.
+              One chat: {companyNamePlaceholder}. Notes stay on the desk.
             </p>
           </div>
           <Link
@@ -196,8 +195,8 @@ export function DriverPortal() {
         ) : null}
 
         <p className="mt-3 px-2 text-center text-[11px] leading-5 text-white/35">
-          Every desk SMS lands as {BUSINESS_LINE_FULL} · {BUSINESS_LINE_PHONE}. No
-          staff names. No dispatcher list.
+          Every desk SMS lands as {companyLineFullPlaceholder} ·{" "}
+          {businessPhonePlaceholder}. No staff names. No dispatcher list.
         </p>
       </div>
     </div>

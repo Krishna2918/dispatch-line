@@ -4,6 +4,10 @@ import Link from "next/link";
 import { SeatStepper } from "@/components/marketing/SeatStepper";
 import { PricingFinePrint, PricingHighlights } from "@/components/marketing/PricingHighlights";
 import { useSeatQuery } from "@/hooks/useSeatQuery";
+import {
+  businessPhonePlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
 import { formatCad, monthlyTotalCad, PRICE_CURRENCY, PRICE_PER_USER_CAD } from "@/lib/pricing";
 import { PRODUCT_NAME } from "@/lib/site";
 
@@ -32,7 +36,9 @@ export function PricingView() {
         {formatCad(PRICE_PER_USER_CAD)} {PRICE_CURRENCY}{" "}
         <span className="font-semibold text-amber">per user</span> / month.{" "}
         <span className="font-semibold text-amber">Unlimited messages</span>{" "}
-        per user — no per-text fee on the desk.
+        per user — no per-text fee on the desk. This is a {PRODUCT_NAME} plan,
+        not a {companyNamePlaceholder} plan. The demo uses placeholder company{" "}
+        {companyNamePlaceholder} / {businessPhonePlaceholder}.
       </p>
 
       <article

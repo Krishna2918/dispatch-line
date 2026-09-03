@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { LegalArticle } from "@/components/marketing/LegalArticle";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
-import {
-  COMPANY_LINE_NAME,
-  COPYRIGHT_YEAR,
-  MANUFACTURER,
-  PRODUCT_NAME,
-} from "@/lib/site";
+import { companyNamePlaceholder } from "@/lib/placeholders";
+import { COPYRIGHT_YEAR, MANUFACTURER, PRODUCT_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms and Conditions",
@@ -35,8 +31,9 @@ export default function TermsPage() {
           <p>
             The hosted demo lets staff try a shared inbox, filters, assignment,
             and a driver-phone view. Drivers in the demo are fictional. The
-            company line shown as {COMPANY_LINE_NAME} is sample branding for the
-            walkthrough. No real freight is being dispatched from this demo.
+            company line shown as {companyNamePlaceholder} is a placeholder
+            company name for the walkthrough — not the {PRODUCT_NAME} brand. No
+            real freight is being dispatched from this demo.
           </p>
         </section>
         <section>

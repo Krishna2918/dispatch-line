@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import {
+  businessPhonePlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
+import { PRICE_CURRENCY, PRICE_PER_USER_CAD } from "@/lib/pricing";
+import { MANUFACTURER, PRODUCT_NAME } from "@/lib/site";
 import "./globals.css";
 
 const plexSans = IBM_Plex_Sans({
@@ -26,11 +32,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "DispatchLine",
-    template: "%s · DispatchLine",
+    default: PRODUCT_NAME,
+    template: `%s · ${PRODUCT_NAME}`,
   },
-  description:
-    "DispatchLine is a shared SMS desk for trucking dispatch. Individual logins, one inbox. $55 CAD per user / month with unlimited messages per user. Manufactured by BIT Solutions.",
+  description: `${PRODUCT_NAME} is a shared SMS desk for trucking dispatch. Individual logins, one inbox. $${PRICE_PER_USER_CAD} ${PRICE_CURRENCY} per user / month with unlimited messages per user. The demo uses placeholder company ${companyNamePlaceholder} / ${businessPhonePlaceholder} — not the product brand. Manufactured by ${MANUFACTURER}.`,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import {
+  businessPhonePlaceholder,
+  companyAvatarPlaceholder,
+  companyLineFullPlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
 import type { Message } from "@/lib/types";
 
-export const BUSINESS_LINE_NAME = "Trans99";
-export const BUSINESS_LINE_FULL = "Trans99 Dispatch";
-export const BUSINESS_LINE_PHONE = "(519) 340-9524";
 export const JOHN_STORY_CHIP =
   "Truck 125 is at the customer. They are saying the load isn't ready.";
 
@@ -69,7 +72,7 @@ export function DriverPhone({
   return (
     <section
       className="relative mx-auto flex h-[min(48rem,calc(100dvh-7.5rem))] w-full max-w-[24.5rem] flex-col overflow-hidden rounded-[2.55rem] bg-black shadow-[0_30px_80px_-24px_rgba(0,0,0,0.85)]"
-      aria-label={`Messages with ${BUSINESS_LINE_NAME}`}
+      aria-label={`Messages with ${companyNamePlaceholder}`}
     >
       <div
         className="pointer-events-none absolute inset-0 rounded-[2.55rem] ring-[10px] ring-[#1b1c20]"
@@ -100,14 +103,14 @@ export function DriverPhone({
               className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#1d4f7a] text-[13px] font-semibold tracking-wide text-white"
               aria-hidden
             >
-              T99
+              {companyAvatarPlaceholder}
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-[16px] font-semibold leading-5 tracking-tight">
-                {BUSINESS_LINE_NAME}
+                {companyNamePlaceholder}
               </p>
               <p className="truncate text-[12px] text-[#6e6e73]">
-                {BUSINESS_LINE_FULL} · {BUSINESS_LINE_PHONE}
+                {companyLineFullPlaceholder} · {businessPhonePlaceholder}
               </p>
             </div>
           </div>
@@ -118,11 +121,11 @@ export function DriverPhone({
           className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-3"
           role="log"
           aria-live="polite"
-          aria-label={`Texts with ${BUSINESS_LINE_NAME}`}
+          aria-label={`Texts with ${companyNamePlaceholder}`}
         >
           {messages.length === 0 ? (
             <p className="px-6 py-16 text-center text-[13px] text-[#8e8e93]">
-              No texts yet. Dispatch shows up as {BUSINESS_LINE_NAME}.
+              No texts yet. Dispatch shows up as {companyNamePlaceholder}.
             </p>
           ) : (
             messages.map((message, index) => {
@@ -169,7 +172,7 @@ export function DriverPhone({
         >
           <div className="flex items-end gap-2">
             <label className="sr-only" htmlFor="driver-sms">
-              Text {BUSINESS_LINE_NAME}
+              Text {companyNamePlaceholder}
             </label>
             <textarea
               id="driver-sms"

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ComposerMode } from "@/hooks/useDemoInbox";
+import { companyNamePlaceholder } from "@/lib/placeholders";
 import type { Profile } from "@/lib/types";
 import { IconNote, IconSms } from "./icons";
 
@@ -97,7 +98,7 @@ export function Composer({
             {readOnly
               ? "Read-only — you can view, not send"
               : sms
-                ? `Desk shows ${name} · driver sees Trans99`
+                ? `Desk shows ${name} · driver sees ${companyNamePlaceholder}`
                 : `Staff only · ${name}`}
           </p>
         </div>

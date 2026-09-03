@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDemoSession } from "@/hooks/useDemoSession";
 import { DEMO_DISPATCHER, DEMO_STAFF_ROSTER } from "@/lib/demo-data";
-import { COMPANY_LINE_NAME, PRODUCT_NAME } from "@/lib/site";
+import {
+  businessPhonePlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
+import { PRODUCT_NAME } from "@/lib/site";
 
 const david = DEMO_STAFF_ROSTER[1];
 
@@ -22,7 +26,7 @@ const beats = [
   {
     clock: "0:35",
     title: "Open the driver phone",
-    copy: `Switch to the driver phone. There is one chat: ${COMPANY_LINE_NAME}. No dispatcher names, no staff list, no internal notes.`,
+    copy: `Switch to the driver phone. There is one chat: ${companyNamePlaceholder}. No dispatcher names, no staff list, no internal notes.`,
   },
   {
     clock: "0:50",
@@ -49,7 +53,8 @@ export function DemoWalkthrough() {
         Two staff. One driver phone.
       </h1>
       <p className="enter-up mt-4 max-w-xl text-[16px] leading-7 text-muted">
-        This walkthrough uses the seeded Trans99 desk. You do not need a
+        This walkthrough uses the seeded demo desk with placeholder company{" "}
+        {companyNamePlaceholder} / {businessPhonePlaceholder}. You do not need a
         password. Follow the beats, then open the real surfaces.
       </p>
 

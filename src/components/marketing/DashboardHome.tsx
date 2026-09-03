@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { roleLabel } from "@/hooks/format";
 import { useDemoSession } from "@/hooks/useDemoSession";
+import { CompanyLineFields } from "@/components/marketing/CompanyLineFields";
 import { DEMO_CONVERSATIONS, DEMO_DRIVERS, DEMO_GROUPS } from "@/lib/demo-data";
 import {
-  COMPANY_LINE_FULL,
-  COMPANY_LINE_NAME,
-  COMPANY_LINE_PHONE,
-  MANUFACTURER,
-  PRODUCT_NAME,
-} from "@/lib/site";
+  businessPhonePlaceholder,
+  companyLineFullPlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
+import { MANUFACTURER, PRODUCT_NAME } from "@/lib/site";
 
 const unreadSeed = DEMO_CONVERSATIONS.filter((row) => row.unreadCount > 0).length;
 
@@ -74,8 +74,8 @@ export function DashboardHome() {
           ],
           [
             "Driver phone",
-            `${COMPANY_LINE_NAME} · ${COMPANY_LINE_PHONE}`,
-            `Drivers text their own phone. They only see ${COMPANY_LINE_FULL}. Staff names stay here.`,
+            `${companyNamePlaceholder} · ${businessPhonePlaceholder}`,
+            `Demo placeholder company / shared business number. Drivers only see ${companyLineFullPlaceholder}. Staff names stay here.`,
           ],
           [
             "Filters",
@@ -94,6 +94,22 @@ export function DashboardHome() {
           </article>
         ))}
       </div>
+
+      <section
+        className="enter-up mt-6 rounded-[2rem] border border-line bg-panel px-6 py-6"
+        style={{ "--enter-delay": "240ms" } as React.CSSProperties}
+      >
+        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-amber">
+          Company line
+        </p>
+        <p className="mt-2 text-[14px] leading-6 text-muted">
+          Demo fill-ins — not the {PRODUCT_NAME} brand. Drivers see this shared
+          line, not dispatcher names.
+        </p>
+        <div className="mt-4">
+          <CompanyLineFields idPrefix="dashboard" />
+        </div>
+      </section>
 
       <div
         className="enter-up mt-8 flex flex-wrap gap-3"

@@ -12,7 +12,12 @@ import {
   findAccountByEmail,
   type DemoAccount,
 } from "@/lib/demo-accounts";
+import { CompanyLineFields } from "@/components/marketing/CompanyLineFields";
 import { DEMO_DISPATCHER } from "@/lib/demo-data";
+import {
+  businessPhonePlaceholder,
+  companyNamePlaceholder,
+} from "@/lib/placeholders";
 import { PRODUCT_NAME } from "@/lib/site";
 import type { Profile } from "@/lib/types";
 
@@ -72,7 +77,8 @@ export function DemoLogin() {
         style={{ "--enter-delay": "90ms" } as React.CSSProperties}
       >
         Individual login. One shared inbox. Your name stays on the desk — drivers
-        only see the company line.{" "}
+        only see the company line. The demo uses placeholder company{" "}
+        {companyNamePlaceholder} / {businessPhonePlaceholder}.{" "}
         <Link href="/pricing" className="text-amber hover:text-amber-hot">
           See pricing
         </Link>
@@ -126,6 +132,16 @@ export function DemoLogin() {
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+            Company line
+          </p>
+          <p className="text-[13px] leading-5 text-muted">
+            Demo fill-ins — not the {PRODUCT_NAME} brand.
+          </p>
+          <CompanyLineFields idPrefix="login" />
         </div>
 
         {error ? (

@@ -66,11 +66,18 @@ export function initials(name: string): string {
 }
 
 export function roleLabel(role: string): string {
-  if (role === "admin") {
-    return "Admin";
-  }
-  if (role === "dispatcher") {
-    return "Dispatcher";
-  }
+  if (role === "admin") return "Administrator";
+  if (role === "dispatcher") return "Dispatcher";
+  if (role === "manager") return "Operations Manager";
+  if (role === "readonly") return "Read-only · Safety";
   return role;
+}
+
+export function statusLabel(status: string): string {
+  if (status === "new") return "New";
+  if (status === "open") return "Open";
+  if (status === "in_progress") return "In Progress";
+  if (status === "waiting_for_driver") return "Waiting for Driver";
+  if (status === "resolved") return "Resolved";
+  return status;
 }

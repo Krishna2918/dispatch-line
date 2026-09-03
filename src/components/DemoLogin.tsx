@@ -30,8 +30,8 @@ export function DemoLogin() {
         className="enter-up mt-3 max-w-md text-[15px] leading-6 text-muted"
         style={{ "--enter-delay": "90ms" } as React.CSSProperties}
       >
-        One click. Seeded trucking traffic. No Twilio, no Supabase, no password.
-        Drivers stay on native SMS — this is the shared staff inbox.
+        Individual login, one shared inbox. Filters are views — never a private
+        copy. No Twilio, no Supabase, no password.
       </p>
 
       <ul className="mt-8 space-y-2.5">

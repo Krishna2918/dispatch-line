@@ -2,51 +2,57 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { displayPhone } from "@/lib/phone";
-import type { Driver, Tag } from "@/lib/types";
+import type { ContactGroup, Driver, Tag } from "@/lib/types";
 import { IconClose } from "./icons";
 import { TagChip } from "./TagChip";
 
 type BroadcastModalProps = {
   open: boolean;
-  tags: Tag[];
+  groups: ContactGroup[];
+  tags?: Tag[];
   staffName: string;
-  driversForTags: (tagIds: string[]) => Driver[];
+  driversForGroups: (groupIds: string[]) => Driver[];
+  driversForTags?: (tagIds: string[]) => Driver[];
   onClose: () => void;
-  onSend: (tagIds: string[], body: string) => number | Promise<number>;
+  onSend: (groupIds: string[], body: string, tagIds?: string[]) => number | Promise<number>;
 };
 
 export function BroadcastModal({
   open,
-  tags,
+  groups,
+  tags = [],
   staffName,
+  driversForGroups,
   driversForTags,
   onClose,
   onSend,
 }: BroadcastModalProps) {
   const titleId = useId();
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [selectedGroups, setSelectedGroups] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [body, setBody] = useState("");
   const [sentCount, setSentCount] = useState<number | null>(null);
   const [pending, setPending] = useState(false);
 
-  const targets = useMemo(
-    () => driversForTags(selectedTags),
-    [driversForTags, selectedTags],
-  );
+  const targets = useMemo(() => {
+    const byId = new Map<string, Driver>();
+    for (const driver of driversForGroups(selectedGroups)) byId.set(driver.id, driver);
+    if (driversForTags) {
+      for (const driver of driversForTags(selectedTags)) byId.set(driver.id, driver);
+    }
+    return [...byId.values()];
+  }, [driversForGroups, driversForTags, selectedGroups, selectedTags]);
 
   useEffect(() => {
-    if (!open) {
-      return;
-    }
+    if (!open) return;
+    setSelectedGroups([]);
     setSelectedTags([]);
     setBody("");
     setSentCount(null);
     const frame = window.requestAnimationFrame(() => inputRef.current?.focus());
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
+      if (event.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => {
@@ -55,18 +61,17 @@ export function BroadcastModal({
     };
   }, [open, onClose]);
 
-  if (!open) {
-    return null;
-  }
+  if (!open) return null;
 
-  const toggleTag = (id: string) => {
-    setSelectedTags((current) =>
-      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
-    );
+  const toggle = (list: string[], id: string, set: (next: string[]) => void) => {
+    set(list.includes(id) ? list.filter((item) => item !== id) : [...list, id]);
     setSentCount(null);
   };
 
-  const canSend = selectedTags.length > 0 && body.trim().length > 0 && !pending;
+  const canSend =
+    (selectedGroups.length > 0 || selectedTags.length > 0) &&
+    body.trim().length > 0 &&
+    !pending;
 
   return (
     <div className="overlay-in fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-3 sm:items-center">
@@ -84,11 +89,9 @@ export function BroadcastModal({
       >
         <header className="flex items-start justify-between gap-3 px-5 pt-5 pb-3">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber">
-              Mass SMS
-            </p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber">Mass SMS</p>
             <h2 id={titleId} className="mt-1 text-lg font-semibold tracking-tight text-ink">
-              Broadcast to tagged drivers
+              Broadcast to groups
             </h2>
           </div>
           <button
@@ -107,26 +110,44 @@ export function BroadcastModal({
             role="note"
           >
             Replies come back as private 1:1 threads — not a group chat.
-            Each driver gets their own SMS. They will not see who else got this.
           </div>
 
           <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
-            Select tags
+            Select groups
           </p>
           <div className="mb-4 flex flex-wrap gap-2">
-            {tags.map((tag) => {
-              const count = driversForTags([tag.id]).length;
+            {groups.map((group) => {
+              const count = driversForGroups([group.id]).length;
               return (
                 <TagChip
-                  key={tag.id}
-                  tag={{ ...tag, name: `${tag.name} · ${count}` }}
+                  key={group.id}
+                  tag={{ ...group, name: `${group.name} · ${count}` }}
                   size="md"
-                  active={selectedTags.includes(tag.id)}
-                  onClick={() => toggleTag(tag.id)}
+                  active={selectedGroups.includes(group.id)}
+                  onClick={() => toggle(selectedGroups, group.id, setSelectedGroups)}
                 />
               );
             })}
           </div>
+
+          {tags.length > 0 ? (
+            <>
+              <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+                Tags
+              </p>
+              <div className="mb-4 flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <TagChip
+                    key={tag.id}
+                    tag={tag}
+                    size="md"
+                    active={selectedTags.includes(tag.id)}
+                    onClick={() => toggle(selectedTags, tag.id, setSelectedTags)}
+                  />
+                ))}
+              </div>
+            </>
+          ) : null}
 
           <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
             {targets.length === 0
@@ -156,7 +177,7 @@ export function BroadcastModal({
               setSentCount(null);
             }}
             rows={4}
-            placeholder="Yard closed at 1900. Do not deadhead to Chicago without a new load."
+            placeholder="Yard closed at 1900. Do not deadhead without a new load."
             className="w-full resize-none rounded-[1.5rem] border border-line bg-board px-4 py-3 text-[14px] leading-6 text-ink outline-none placeholder:text-muted/70 focus-visible:border-amber"
           />
           <p className="mt-2 font-mono text-[11px] text-muted">
@@ -182,7 +203,7 @@ export function BroadcastModal({
             disabled={!canSend}
             onClick={() => {
               setPending(true);
-              void Promise.resolve(onSend(selectedTags, body))
+              void Promise.resolve(onSend(selectedGroups, body, selectedTags))
                 .then((count) => setSentCount(count))
                 .finally(() => setPending(false));
             }}

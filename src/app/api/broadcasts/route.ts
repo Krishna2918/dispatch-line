@@ -39,11 +39,12 @@ export async function POST(req: Request) {
   const input = (await req.json()) as BroadcastInput;
   const body = input.body?.trim() ?? "";
   const tagIds = input.tagIds ?? [];
+  const groupIds = input.groupIds ?? [];
   if (!body) {
     return NextResponse.json({ error: "Broadcast body is required" }, { status: 400 });
   }
-  if (tagIds.length === 0) {
-    return NextResponse.json({ error: "Select at least one tag" }, { status: 400 });
+  if (tagIds.length === 0 && groupIds.length === 0) {
+    return NextResponse.json({ error: "Select at least one group" }, { status: 400 });
   }
 
   const sender = await resolveSender(req, input.sender);
@@ -145,6 +146,7 @@ export async function POST(req: Request) {
     createdByName: sender.fullName,
     body: broadcastRow.body,
     tagIds: broadcastRow.tag_ids,
+    groupIds,
     recipientCount: broadcastRow.recipient_count,
     createdAt: broadcastRow.created_at,
   };

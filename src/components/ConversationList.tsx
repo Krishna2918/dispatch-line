@@ -1,44 +1,81 @@
 "use client";
 
-import { formatPhone, formatRelativeTime, initials } from "@/hooks/format";
+import { formatPhone, formatRelativeTime, initials, statusLabel } from "@/hooks/format";
 import type { ThreadRow } from "@/hooks/useDemoInbox";
-import type { Tag } from "@/lib/types";
+import type {
+  AssignmentFilter,
+  ContactGroup,
+  DateFilter,
+  Profile,
+  ReadFilter,
+  StatusFilter,
+  Tag,
+} from "@/lib/types";
 import { IconSearch } from "@/components/icons";
+import { InboxFilters } from "@/components/InboxFilters";
 import { TagChip } from "@/components/TagChip";
 
 type Props = {
   rows: ThreadRow[];
   tags: Tag[];
+  groups: ContactGroup[];
+  roster: Profile[];
+  staff: Profile;
   selectedId: string;
   search: string;
+  groupFilter: string[];
   tagFilter: string | null;
+  assignmentFilter: AssignmentFilter;
+  readFilter: ReadFilter;
+  statusFilter: StatusFilter;
+  dateFilter: DateFilter;
+  filtersActive: boolean;
   unreadTotal: number;
   now: number;
   onSearchChange: (value: string) => void;
+  onToggleGroup: (groupId: string) => void;
   onTagFilterChange: (tagId: string | null) => void;
+  onAssignmentChange: (value: AssignmentFilter) => void;
+  onReadChange: (value: ReadFilter) => void;
+  onStatusChange: (value: StatusFilter) => void;
+  onDateChange: (value: DateFilter) => void;
+  onClearFilters: () => void;
+  onClearGroups: () => void;
   onSelect: (conversationId: string) => void;
 };
 
 export function ConversationList({
   rows,
   tags,
+  groups,
+  roster,
+  staff,
   selectedId,
   search,
+  groupFilter,
   tagFilter,
+  assignmentFilter,
+  readFilter,
+  statusFilter,
+  dateFilter,
+  filtersActive,
   unreadTotal,
   now,
   onSearchChange,
+  onToggleGroup,
   onTagFilterChange,
+  onAssignmentChange,
+  onReadChange,
+  onStatusChange,
+  onDateChange,
+  onClearFilters,
+  onClearGroups,
   onSelect,
 }: Props) {
   return (
-    <div className="flex h-full min-h-0 w-full flex-col bg-panel md:w-[22rem]">
+    <div className="flex h-full min-h-0 w-full flex-col bg-panel md:w-[24.5rem]">
       <div className="px-3 py-3">
-        <div className="flex items-baseline justify-between gap-2 px-1">
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">Threads</p>
-          <p className="font-mono text-[11px] text-amber">{unreadTotal} unread</p>
-        </div>
-        <label className="relative mt-2 block">
+        <label className="relative block">
           <span className="sr-only">Search conversations</span>
           <IconSearch className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
@@ -46,49 +83,51 @@ export function ConversationList({
             type="search"
             value={search}
             onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Search drivers, tags, phone"
+            placeholder="Search name, phone, truck"
             className="w-full rounded-full border border-line bg-board py-2.5 pr-4 pl-10 text-sm text-ink placeholder:text-muted outline-none focus:border-amber"
           />
         </label>
-        <div className="mt-2.5 flex flex-wrap gap-1.5">
-          <button
-            type="button"
-            onClick={() => onTagFilterChange(null)}
-            className={`lift chip-pop rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] ${
-              tagFilter === null
-                ? "border-amber/50 bg-amber/15 text-amber"
-                : "border-line text-muted hover:text-ink"
-            }`}
-          >
-            All
-          </button>
-          {tags.map((tag, index) => (
-            <span
-              key={tag.id}
-              className="chip-pop"
-              style={{ "--enter-delay": `${40 + index * 35}ms` } as React.CSSProperties}
-            >
-              <TagChip
-                tag={tag}
-                compact
-                active={tagFilter === tag.id}
-                onClick={() => onTagFilterChange(tagFilter === tag.id ? null : tag.id)}
-              />
-            </span>
-          ))}
+        <div className="mt-3">
+          <InboxFilters
+            groups={groups}
+            tags={tags}
+            roster={roster}
+            staff={staff}
+            groupFilter={groupFilter}
+            tagFilter={tagFilter}
+            assignmentFilter={assignmentFilter}
+            readFilter={readFilter}
+            statusFilter={statusFilter}
+            dateFilter={dateFilter}
+            filtersActive={filtersActive}
+            unreadTotal={unreadTotal}
+            visibleCount={rows.length}
+            onToggleGroup={onToggleGroup}
+            onTagFilterChange={onTagFilterChange}
+            onAssignmentChange={onAssignmentChange}
+            onReadChange={onReadChange}
+            onStatusChange={onStatusChange}
+            onDateChange={onDateChange}
+            onClear={onClearFilters}
+            onClearGroups={onClearGroups}
+          />
         </div>
       </div>
 
       <ul className="board-scroll min-h-0 flex-1 space-y-1.5 overflow-y-auto px-2 pb-3" role="listbox" aria-label="Conversations">
         {rows.length === 0 ? (
-          <li className="px-4 py-8 text-center text-sm text-muted">No threads match.</li>
+          <li className="px-4 py-8 text-center text-sm text-muted">
+            No threads match this view. Clear filters to see the full shared inbox.
+          </li>
         ) : (
-          rows.map(({ conversation, driver, tags: rowTags }, index) => {
+          rows.map(({ conversation, driver, tags: rowTags, groups: rowGroups }, index) => {
             const selected = conversation.id === selectedId;
             const unread = conversation.unreadCount;
             const preview = conversation.lastMessagePreview ?? "";
             const at = conversation.lastMessageAt;
             const recent = at ? now - new Date(at).getTime() < 120_000 : false;
+            const assignee = roster.find((person) => person.id === conversation.assignedStaffId);
+            const chips = rowGroups.length > 0 ? rowGroups : rowTags;
             return (
               <li
                 key={conversation.id}
@@ -100,7 +139,7 @@ export function ConversationList({
                   role="option"
                   aria-selected={selected}
                   onClick={() => onSelect(conversation.id)}
-                  className={`lift flex w-full gap-3 rounded-full border px-3.5 py-3 text-left ${
+                  className={`lift flex w-full gap-3 rounded-[1.75rem] border px-3.5 py-3 text-left ${
                     selected
                       ? "border-amber/40 bg-panel-raised"
                       : "border-transparent hover:border-line hover:bg-panel-raised/70"
@@ -129,17 +168,28 @@ export function ConversationList({
                     </span>
                     <span className="mt-0.5 block font-mono text-[11px] text-muted">
                       {formatPhone(driver.phone)}
+                      {driver.truck ? ` · Truck ${driver.truck}` : ""}
                     </span>
                     <span className={`mt-1 block truncate text-xs ${unread ? "text-ink" : "text-muted"}`}>
                       {preview || "No messages yet"}
                     </span>
-                    {rowTags.length > 0 ? (
-                      <span className="mt-1.5 flex flex-wrap gap-1">
-                        {rowTags.map((tag) => (
-                          <TagChip key={tag.id} tag={tag} compact />
-                        ))}
+                    <span className="mt-1.5 flex flex-wrap items-center gap-1">
+                      <span className="rounded-full border border-line px-2 py-px font-mono text-[10px] uppercase tracking-[0.1em] text-muted">
+                        {statusLabel(conversation.status)}
                       </span>
-                    ) : null}
+                      {assignee ? (
+                        <span className="rounded-full border border-amber/30 px-2 py-px font-mono text-[10px] uppercase tracking-[0.1em] text-amber">
+                          {assignee.fullName.split(" ")[0]}
+                        </span>
+                      ) : (
+                        <span className="rounded-full border border-line px-2 py-px font-mono text-[10px] uppercase tracking-[0.1em] text-muted">
+                          Unassigned
+                        </span>
+                      )}
+                      {chips.map((chip) => (
+                        <TagChip key={chip.id} tag={chip} compact />
+                      ))}
+                    </span>
                   </span>
                   {unread > 0 ? (
                     <span className="unread-pulse mt-1 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-amber px-1.5 text-center text-[10px] font-bold text-board tabular-nums">

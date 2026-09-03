@@ -7,9 +7,13 @@ type MessageBubbleProps = {
   index?: number;
 };
 
+function staffSenderName(message: Message): string {
+  return message.senderName || message.sender_name || "Dispatcher";
+}
+
 export function MessageBubble({ message, driverName, index = 0 }: MessageBubbleProps) {
-  const inboundName = message.senderName ?? driverName;
-  const outboundName = message.senderName ?? "Dispatcher";
+  const inboundName = driverName;
+  const outboundName = staffSenderName(message);
   const delay = { "--enter-delay": `${Math.min(index, 14) * 32}ms` } as React.CSSProperties;
 
   if (message.kind === "internal_note") {

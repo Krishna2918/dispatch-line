@@ -13,6 +13,8 @@ type ComposerProps = {
   error?: string | null;
   disabled?: boolean;
   sending?: boolean;
+  canSend?: boolean;
+  onTyping?: () => void;
   onModeChange?: (mode: ComposerMode) => void;
   onSend: (body: string, kind?: "sms_out" | "internal_note") => boolean | void | Promise<boolean | void>;
 };
@@ -25,6 +27,8 @@ export function Composer({
   error,
   disabled,
   sending,
+  canSend = true,
+  onTyping,
   onModeChange,
   onSend,
 }: ComposerProps) {
@@ -32,11 +36,12 @@ export function Composer({
   const [localError, setLocalError] = useState<string | null>(null);
   const sms = mode === "sms";
   const name = staffName ?? staff?.fullName ?? staff?.name ?? "Desk";
-  const blocked = disabled || sending || !driverName || draft.trim().length === 0;
+  const readOnly = canSend === false;
+  const blocked = readOnly || disabled || sending || !driverName || draft.trim().length === 0;
 
   const submit = async () => {
     const text = draft.trim();
-    if (!text || !driverName || disabled || sending) return;
+    if (!text || !driverName || disabled || sending || readOnly) return;
     setLocalError(null);
     try {
       const ok = await onSend(text, sms ? "sms_out" : "internal_note");
@@ -89,7 +94,11 @@ export function Composer({
             </button>
           </div>
           <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
-            {sms ? `Sends as ${name} · native SMS` : `Staff only · ${name}`}
+            {readOnly
+              ? "Read-only · Safety can view, not send"
+              : sms
+                ? `Sends as ${name} · native SMS`
+                : `Staff only · ${name}`}
           </p>
         </div>
 
@@ -99,8 +108,11 @@ export function Composer({
         <textarea
           id="composer-body"
           value={draft}
-          disabled={disabled || sending}
-          onChange={(event) => setDraft(event.target.value)}
+          disabled={readOnly || disabled || sending}
+          onChange={(event) => {
+            setDraft(event.target.value);
+            onTyping?.();
+          }}
           onKeyDown={(event) => {
             if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
               event.preventDefault();
@@ -109,11 +121,13 @@ export function Composer({
           }}
           rows={3}
           placeholder={
-            sms
-              ? driverName
-                ? `Text ${driverName}…`
-                : "Select a thread"
-              : "Private note for the desk. Drivers never see this."
+            readOnly
+              ? "Read-only account — you can view this thread but cannot send."
+              : sms
+                ? driverName
+                  ? `Text ${driverName}…`
+                  : "Select a thread"
+                : "Private note for the desk. Drivers never see this."
           }
           className={`w-full resize-none rounded-[2rem] border bg-panel px-5 py-3 text-[14px] leading-6 text-ink outline-none placeholder:text-muted/70 focus-visible:border-amber disabled:opacity-50 ${
             sms ? "border-line" : "border-note/40"
@@ -129,7 +143,7 @@ export function Composer({
               sms ? "bg-amber text-board hover:bg-amber-hot" : "bg-note text-board hover:brightness-110"
             }`}
           >
-            {sending ? "Sending" : sms ? "Send SMS" : "Post note"}
+            {readOnly ? "View only" : sending ? "Sending" : sms ? "Send SMS" : "Post note"}
           </button>
         </div>
         {error || localError ? (

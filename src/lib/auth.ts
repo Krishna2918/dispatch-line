@@ -1,19 +1,27 @@
-import { DEMO_DISPATCHER } from "./demo-data";
+import { DEMO_DISPATCHER, DEMO_STAFF_ROSTER } from "./demo-data";
 import { asProfile, type Profile, type Staff } from "./types";
 
-const STAFF_KEY = "dispatch-line-staff";
+const STAFF_KEY = "dispatch-line-staff-session";
+
+function readStore(): Storage | null {
+  if (typeof window === "undefined") return null;
+  return window.sessionStorage;
+}
 
 export function getDemoStaff(): Profile {
-  if (typeof window === "undefined") return DEMO_DISPATCHER;
+  const storage = readStore();
+  if (!storage) return DEMO_DISPATCHER;
   try {
-    const raw = window.localStorage.getItem(STAFF_KEY);
+    const raw = storage.getItem(STAFF_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as Staff & Partial<Profile>;
-      if (parsed?.id && (parsed.name || parsed.fullName)) {
+      if (parsed?.id) {
+        const roster = DEMO_STAFF_ROSTER.find((row) => row.id === parsed.id);
+        if (roster) return roster;
         return asProfile({
           id: parsed.id,
           name: parsed.name ?? parsed.fullName ?? "Dispatcher",
-          role: parsed.role === "admin" ? "admin" : "dispatcher",
+          role: parsed.role,
         });
       }
     }
@@ -24,6 +32,9 @@ export function getDemoStaff(): Profile {
 }
 
 export function setDemoStaff(profile: Staff | Profile) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(STAFF_KEY, JSON.stringify(asProfile(profile)));
+  const storage = readStore();
+  if (!storage) return;
+  const next = asProfile(profile);
+  const roster = DEMO_STAFF_ROSTER.find((row) => row.id === next.id);
+  storage.setItem(STAFF_KEY, JSON.stringify(roster ?? next));
 }

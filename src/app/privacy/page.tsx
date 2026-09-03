@@ -50,9 +50,9 @@ export default function PrivacyPage() {
         <section>
           <h2>4. What we do not collect in the demo</h2>
           <p>
-            The sign-in form accepts seeded emails only. Do not enter a real
-            workplace password or personal inbox. The demo is not meant to
-            collect:
+            The sign-in form accepts an issued ID and password only. There is
+            no sign-up. Do not enter a real workplace password or personal
+            inbox. The demo is not meant to collect:
           </p>
           <ul>
             <li>Government IDs, bills of lading, or live GPS.</li>

@@ -46,7 +46,7 @@ export default function TermsPage() {
           <ul>
             <li>Messages stay in the browser demo store (seeded and local).</li>
             <li>Phone numbers on the desk are sample numbers.</li>
-            <li>Sign-in accounts are seeded demo users, not production identities.</li>
+            <li>The /login form requires an issued ID and password. This site does not create accounts.</li>
           </ul>
           <p>
             Do not rely on this demo to reach a real driver, customer, or
@@ -56,10 +56,11 @@ export default function TermsPage() {
         <section>
           <h2>4. Accounts and access</h2>
           <p>
-            Demo logins are shared examples (for instance Sarah Chen). Anyone can
-            enter the desk with a seeded email or the Continue with demo path.
-            Do not put real passwords, API keys, or personal data into the demo
-            fields. {MANUFACTURER} may reset or change the demo at any time.
+            The /login page requires an issued ID and password. There is no
+            sign-up, register, or demo bypass on that page. Try the desk from
+            the home page Try demo control or the /demo walkthrough. Do not put
+            real passwords, API keys, or personal data into demo fields.{" "}
+            {MANUFACTURER} may reset or change the demo at any time.
           </p>
         </section>
         <section>

@@ -8,6 +8,7 @@ import {
   businessPhonePlaceholder,
   companyNamePlaceholder,
 } from "@/lib/placeholders";
+import { loginHref } from "@/lib/credentials";
 import { formatCad, monthlyTotalCad, PRICE_CURRENCY, PRICE_PER_USER_CAD } from "@/lib/pricing";
 import { PRODUCT_NAME } from "@/lib/site";
 
@@ -67,10 +68,10 @@ export function PricingView() {
           <SeatStepper seats={seats} onChange={setSeats} />
         </div>
         <Link
-          href={`/pay?seats=${seats}`}
+          href={loginHref(`/pay?seats=${seats}`)}
           className="lift mt-6 flex w-full items-center justify-center rounded-full bg-amber px-5 py-3 font-mono text-[12px] uppercase tracking-[0.16em] text-board hover:bg-amber-hot"
         >
-          Continue to checkout · {formatCad(total)} CAD/month
+          Buy · {formatCad(total)} CAD/month
         </Link>
         <div className="mt-5">
           <PricingFinePrint />

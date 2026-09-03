@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { loginHref } from "@/lib/credentials";
 import { COPYRIGHT_YEAR, MANUFACTURER, PRODUCT_NAME } from "@/lib/site";
 
 export function MarketingFooter() {
@@ -20,7 +21,7 @@ export function MarketingFooter() {
             Pricing
           </Link>
           <Link
-            href="/pay"
+            href={loginHref("/pay")}
             className="rounded-full px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:bg-panel-raised hover:text-ink"
           >
             Pay

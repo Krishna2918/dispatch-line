@@ -43,8 +43,8 @@ export function PayView() {
               {seats} {seats === 1 ? "seat" : "seats"} · {formatCad(total)} CAD/month
             </h2>
             <p className="mt-3 text-[15px] leading-6 text-muted">
-              Demo checkout complete. No card was charged. Stripe billing is
-              not connected yet — when it is, this same total{" "}
+              Seat request recorded. No card was charged. Billing is not
+              connected yet — when it is, this same total{" "}
               <span className="font-semibold text-amber">per user</span> will
               apply, with{" "}
               <span className="font-semibold text-amber">unlimited messages</span>{" "}
@@ -110,7 +110,7 @@ export function PayView() {
               Continue — request {seats} {seats === 1 ? "seat" : "seats"}
             </button>
             <p className="mt-3 text-center font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
-              Stripe later · no charge now
+              No charge now
             </p>
             <div className="mt-5">
               <PricingFinePrint />

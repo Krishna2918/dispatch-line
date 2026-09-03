@@ -2,63 +2,54 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { roleLabel } from "@/hooks/format";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDemoSession } from "@/hooks/useDemoSession";
-import {
-  DEMO_ACCOUNTS,
-  DEMO_PASSWORD,
-  authenticateDemo,
-  findAccountByEmail,
-  type DemoAccount,
-} from "@/lib/demo-accounts";
-import { CompanyLineFields } from "@/components/marketing/CompanyLineFields";
 import { DEMO_DISPATCHER } from "@/lib/demo-data";
-import {
-  businessPhonePlaceholder,
-  companyNamePlaceholder,
-} from "@/lib/placeholders";
+import { safeNextPath } from "@/lib/credentials";
 import { PRODUCT_NAME } from "@/lib/site";
-import type { Profile } from "@/lib/types";
 
 export function DemoLogin() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { enterAs } = useDemoSession();
-  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const enter = (staff: Profile) => {
-    enterAs(staff);
-    router.replace("/dashboard");
-  };
-
-  const fill = (account: DemoAccount) => {
-    setEmail(account.email);
-    setPassword(DEMO_PASSWORD);
-    setError(null);
-  };
-
-  const onSubmit = (event: React.FormEvent) => {
+  const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setBusy(true);
     setError(null);
 
-    const known = findAccountByEmail(email);
-    if (!known) {
-      setError("We don’t recognize that email. Use a seeded demo account or continue with demo.");
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: userId, password }),
+      });
+      const payload = (await response.json().catch(() => null)) as
+        | { ok?: boolean; error?: string }
+        | null;
+
+      if (!response.ok || !payload?.ok) {
+        setError(payload?.error ?? "Invalid ID or password.");
+        return;
+      }
+
+      const next = safeNextPath(searchParams.get("next"));
+      if (next) {
+        router.replace(next);
+        return;
+      }
+      enterAs(DEMO_DISPATCHER);
+      router.replace("/dashboard");
+    } catch {
+      setError("Invalid ID or password.");
+    } finally {
       setBusy(false);
-      return;
     }
-    const staff = authenticateDemo(email, password);
-    if (!staff) {
-      setError("Incorrect password.");
-      setBusy(false);
-      return;
-    }
-    enter(staff);
   };
 
   return (
@@ -76,9 +67,8 @@ export function DemoLogin() {
         className="enter-up mt-3 max-w-md text-[15px] leading-6 text-muted"
         style={{ "--enter-delay": "90ms" } as React.CSSProperties}
       >
-        Individual login. One shared inbox. Your name stays on the desk — drivers
-        only see the company line. The demo uses placeholder company{" "}
-        {companyNamePlaceholder} / {businessPhonePlaceholder}.{" "}
+        Enter the ID and password issued to you. There is no sign-up on this
+        page.{" "}
         <Link href="/pricing" className="text-amber hover:text-amber-hot">
           See pricing
         </Link>
@@ -92,21 +82,20 @@ export function DemoLogin() {
         noValidate
       >
         <div>
-          <label htmlFor="login-email" className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
-            Email
+          <label htmlFor="login-id" className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+            ID / User ID
           </label>
           <input
-            id="login-email"
-            name="email"
-            type="email"
+            id="login-id"
+            name="username"
+            type="text"
             autoComplete="username"
-            inputMode="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="sarah.chen@dispatchline.demo"
+            value={userId}
+            onChange={(event) => setUserId(event.target.value)}
+            placeholder="User ID"
             className="mt-1.5 w-full rounded-full border border-line bg-board px-4 py-2.5 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:border-amber/50 focus:shadow-[0_0_0_3px_color-mix(in_oklab,var(--amber)_12%,transparent)]"
             aria-invalid={Boolean(error)}
-            aria-describedby={error ? "login-error" : "login-hint"}
+            aria-describedby={error ? "login-error" : undefined}
           />
         </div>
         <div>
@@ -121,7 +110,7 @@ export function DemoLogin() {
               autoComplete="current-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="Enter password"
+              placeholder="Password"
               className="min-w-0 flex-1 rounded-full border border-line bg-board px-4 py-2.5 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:border-amber/50 focus:shadow-[0_0_0_3px_color-mix(in_oklab,var(--amber)_12%,transparent)]"
             />
             <button
@@ -134,81 +123,22 @@ export function DemoLogin() {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
-            Company line
-          </p>
-          <p className="text-[13px] leading-5 text-muted">
-            Demo fill-ins — not the {PRODUCT_NAME} brand.
-          </p>
-          <CompanyLineFields idPrefix="login" />
-        </div>
-
         {error ? (
           <p id="login-error" className="text-[13px] text-signal" role="alert">
             {error}
           </p>
-        ) : (
-          <p id="login-hint" className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
-            Seeded demo password: {DEMO_PASSWORD}
-          </p>
-        )}
+        ) : null}
 
-        <div className="flex flex-col gap-2 pt-1 sm:flex-row">
+        <div className="pt-1">
           <button
             type="submit"
             disabled={busy}
-            className="lift flex-1 rounded-full bg-amber px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.16em] text-board hover:bg-amber-hot disabled:opacity-70"
+            className="lift w-full rounded-full bg-amber px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.16em] text-board hover:bg-amber-hot disabled:opacity-70"
           >
             Sign in
           </button>
-          <button
-            type="button"
-            onClick={() => enter(DEMO_DISPATCHER)}
-            className="lift flex-1 rounded-full border border-line px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.16em] text-ink hover:border-amber/50"
-          >
-            Continue with demo
-          </button>
         </div>
       </form>
-
-      <p
-        className="enter-up mt-8 font-mono text-[11px] uppercase tracking-[0.16em] text-muted"
-        style={{ "--enter-delay": "160ms" } as React.CSSProperties}
-      >
-        Demo shortcuts
-      </p>
-      <ul className="mt-3 space-y-2">
-        {DEMO_ACCOUNTS.map((account, index) => (
-          <li
-            key={account.staff.id}
-            className="enter-up"
-            style={{ "--enter-delay": `${190 + index * 50}ms` } as React.CSSProperties}
-          >
-            <div className="flex items-center gap-2 rounded-full border border-line bg-panel px-2 py-1.5">
-              <button
-                type="button"
-                onClick={() => fill(account)}
-                className="min-w-0 flex-1 rounded-full px-3 py-2 text-left hover:bg-panel-raised"
-              >
-                <span className="block truncate text-[14px] font-medium text-ink">
-                  {account.staff.fullName}
-                </span>
-                <span className="block truncate font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
-                  {roleLabel(account.staff.role)} · {account.email}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => enter(account.staff)}
-                className="lift shrink-0 rounded-full bg-amber/12 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-amber hover:bg-amber/20"
-              >
-                Enter
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
     </main>
   );
 }

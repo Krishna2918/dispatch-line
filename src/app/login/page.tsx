@@ -17,12 +17,20 @@ export default function LoginPage() {
               Dispatch Line
             </p>
           </div>
-          <Link
-            href="/inbox"
-            className="rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:bg-panel-raised hover:text-ink"
-          >
-            Skip to inbox
-          </Link>
+          <div className="flex items-center gap-1">
+            <Link
+              href="/driver"
+              className="rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:bg-panel-raised hover:text-ink"
+            >
+              Open driver phone
+            </Link>
+            <Link
+              href="/inbox"
+              className="rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:bg-panel-raised hover:text-ink"
+            >
+              Skip to inbox
+            </Link>
+          </div>
         </header>
       </div>
       <DemoLogin />

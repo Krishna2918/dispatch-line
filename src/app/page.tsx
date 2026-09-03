@@ -49,13 +49,19 @@ export default function Home() {
           >
             Skip to inbox
           </Link>
+          <Link
+            href="/driver"
+            className="lift rounded-full border border-line px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.16em] text-ink hover:border-amber/50"
+          >
+            Open driver phone
+          </Link>
         </div>
 
         <ul className="mt-12 grid gap-3 sm:grid-cols-3">
           {[
-            ["Shared threads", "One conversation per driver. Whole desk sees it."],
-            ["Staff notes", "Private comments in the same thread. Drivers never see them."],
-            ["Mass broadcast", "Tag a lane, blast SMS. Replies return 1:1, not a group."],
+            ["One inbox", "Messages live once. Staff logins are views of the same desk."],
+            ["Groups & assignment", "Filter Montreal or Assigned to me — the thread is not copied."],
+            ["Shared read + presence", "Open a thread and it is read for everyone. See who is viewing."],
           ].map(([title, copy], index) => (
             <li
               key={title}

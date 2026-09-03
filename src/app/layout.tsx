@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s · DispatchLine",
   },
   description:
-    "DispatchLine is a shared SMS desk for trucking dispatch. Individual logins, one inbox. Drivers text Trans99 — never a dispatcher name. Manufactured by BIT Solutions.",
+    "DispatchLine is a shared SMS desk for trucking dispatch. Individual logins, one inbox. $55 CAD per user / month with unlimited messages per user. Manufactured by BIT Solutions.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -12,7 +12,19 @@ export function MarketingFooter() {
           </span>
           © {COPYRIGHT_YEAR} {PRODUCT_NAME}
         </p>
-        <nav aria-label="Legal" className="flex items-center gap-1">
+        <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-1">
+          <Link
+            href="/pricing"
+            className="rounded-full px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:bg-panel-raised hover:text-ink"
+          >
+            Pricing
+          </Link>
+          <Link
+            href="/pay"
+            className="rounded-full px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:bg-panel-raised hover:text-ink"
+          >
+            Pay
+          </Link>
           <Link
             href="/terms"
             className="rounded-full px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:bg-panel-raised hover:text-ink"

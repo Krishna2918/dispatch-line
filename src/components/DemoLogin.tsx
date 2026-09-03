@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { roleLabel } from "@/hooks/format";
 import { useDemoSession } from "@/hooks/useDemoSession";
@@ -71,7 +72,11 @@ export function DemoLogin() {
         style={{ "--enter-delay": "90ms" } as React.CSSProperties}
       >
         Individual login. One shared inbox. Your name stays on the desk — drivers
-        only see the company line.
+        only see the company line.{" "}
+        <Link href="/pricing" className="text-amber hover:text-amber-hot">
+          See pricing
+        </Link>
+        .
       </p>
 
       <form

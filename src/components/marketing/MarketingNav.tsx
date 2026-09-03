@@ -7,14 +7,21 @@ import { PRODUCT_NAME } from "@/lib/site";
 import { TryDemoButton } from "./TryDemoButton";
 
 const guestLinks = [
+  { href: "/pricing", label: "Pricing" },
   { href: "/demo", label: "Demo" },
   { href: "/login", label: "Sign in" },
 ] as const;
 
 const signedInLinks = [
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/demo", label: "Demo" },
 ] as const;
+
+function isActive(pathname: string, href: string) {
+  if (href === "/pricing") return pathname === "/pricing" || pathname === "/pay";
+  return pathname === href;
+}
 
 function navClass(active: boolean) {
   return `rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] ${
@@ -45,7 +52,7 @@ export function MarketingNav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={navClass(pathname === link.href)}
+                  className={navClass(isActive(pathname, link.href))}
                 >
                   {link.label}
                 </Link>
@@ -54,7 +61,7 @@ export function MarketingNav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={navClass(pathname === link.href)}
+                  className={navClass(isActive(pathname, link.href))}
                 >
                   {link.label}
                 </Link>

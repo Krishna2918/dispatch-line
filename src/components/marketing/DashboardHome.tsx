@@ -117,6 +117,12 @@ export function DashboardHome() {
         >
           Try demo walkthrough
         </Link>
+        <Link
+          href="/pricing"
+          className="lift rounded-full border border-line px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.16em] text-ink hover:border-amber/50"
+        >
+          Pricing
+        </Link>
       </div>
 
       <p className="mt-10 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">

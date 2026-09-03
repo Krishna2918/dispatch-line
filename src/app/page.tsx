@@ -20,7 +20,7 @@ const features = [
   },
   {
     title: "One company line",
-    copy: `Drivers text their own phone. They only see ${COMPANY_LINE_FULL}. Staff names never leave the desk.`,
+    copy: `Drivers text their own phone. They only see the company line (demo placeholder: ${COMPANY_LINE_FULL}). Staff names never leave the desk.`,
   },
   {
     title: "Groups & filters",
@@ -57,8 +57,9 @@ export default function Home() {
           style={{ "--enter-delay": "120ms" } as React.CSSProperties}
         >
           {PRODUCT_NAME} is the company text desk. Staff keep their own logins.
-          Drivers never install an app — they text {COMPANY_LINE_NAME} at{" "}
-          {COMPANY_LINE_PHONE} and stay in one thread.
+          Drivers never install an app — they text the company line and stay in
+          one thread. The demo uses {COMPANY_LINE_NAME} at {COMPANY_LINE_PHONE}{" "}
+          as a placeholder example, not the product name.
         </p>
 
         <div
@@ -66,8 +67,14 @@ export default function Home() {
           style={{ "--enter-delay": "160ms" } as React.CSSProperties}
         >
           <Link
-            href="/login"
+            href="/pricing"
             className="lift rounded-full bg-amber px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.16em] text-board hover:bg-amber-hot"
+          >
+            See pricing
+          </Link>
+          <Link
+            href="/login"
+            className="lift rounded-full border border-line px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.16em] text-ink hover:border-amber/50"
           >
             Sign in
           </Link>
@@ -93,7 +100,7 @@ export default function Home() {
             [
               "02",
               "Drivers text the line",
-              `A driver uses their personal phone. They only see ${COMPANY_LINE_FULL} — never a staff list.`,
+              `A driver uses their personal phone. They only see the company line (demo placeholder: ${COMPANY_LINE_FULL}) — never a staff list.`,
             ],
             [
               "03",

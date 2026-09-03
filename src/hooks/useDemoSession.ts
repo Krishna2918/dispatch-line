@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { getDemoStaff, setDemoStaff } from "@/lib/auth";
+import { clearDemoStaff, getDemoStaff, setDemoStaff } from "@/lib/auth";
+import { DEMO_DISPATCHER } from "@/lib/demo-data";
 import type { Profile } from "@/lib/types";
 
 export const DEMO_ENTERED_KEY = "dispatchline.demo.entered";
@@ -40,5 +41,14 @@ export function useDemoSession() {
     setEntered(true);
   }, []);
 
-  return { staff, setStaff, enterAs, entered, hydrated };
+  const signOut = useCallback(() => {
+    clearDemoStaff();
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem(DEMO_ENTERED_KEY);
+    }
+    setStaffState(DEMO_DISPATCHER);
+    setEntered(false);
+  }, []);
+
+  return { staff, setStaff, enterAs, signOut, entered, hydrated };
 }

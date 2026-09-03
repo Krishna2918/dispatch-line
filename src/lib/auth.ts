@@ -38,3 +38,9 @@ export function setDemoStaff(profile: Staff | Profile) {
   const roster = DEMO_STAFF_ROSTER.find((row) => row.id === next.id);
   storage.setItem(STAFF_KEY, JSON.stringify(roster ?? next));
 }
+
+export function clearDemoStaff() {
+  const storage = readStore();
+  if (!storage) return;
+  storage.removeItem(STAFF_KEY);
+}

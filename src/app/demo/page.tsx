@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { DemoLogin } from "@/components/DemoLogin";
+import { DemoWalkthrough } from "@/components/marketing/DemoWalkthrough";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 
 export const metadata: Metadata = {
-  title: "Sign in",
+  title: "Demo",
 };
 
-export default function LoginPage() {
+export default function DemoPage() {
   return (
     <MarketingShell>
-      <DemoLogin />
+      <DemoWalkthrough />
     </MarketingShell>
   );
 }

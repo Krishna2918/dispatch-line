@@ -1,4 +1,4 @@
--- Dispatch Line — shared workspace SMS inbox
+-- DispatchLine — shared workspace SMS inbox
 -- One conversation / message / read / status store for the whole desk.
 -- Filters and assignments are views, never copies.
 -- Presence is ephemeral (BroadcastChannel / realtime presence) and is NOT persisted.

@@ -14,7 +14,7 @@ export default function LoginPage() {
           <div className="flex items-center gap-3">
             <span className="size-2 rounded-full bg-amber" aria-hidden />
             <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-amber">
-              Dispatch Line
+              DispatchLine
             </p>
           </div>
           <div className="flex items-center gap-1">

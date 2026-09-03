@@ -152,7 +152,7 @@ export function ChatFeed({
         aria-label={`Thread with ${driver.fullName}`}
       >
         {sorted.length === 0 ? (
-          <p className="py-16 text-center text-sm text-muted">No traffic on this thread yet.</p>
+          <p className="py-16 text-center text-sm text-muted">No messages on this thread yet.</p>
         ) : (
           sorted.map((message, index) => (
             <MessageBubble

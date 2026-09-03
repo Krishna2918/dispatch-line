@@ -23,7 +23,7 @@ export function MessageBubble({ message, driverName, index = 0 }: MessageBubbleP
         style={delay}
         aria-label={`Internal note from ${outboundName}`}
       >
-        <div className="mb-1 flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-note">
+        <div className="mb-1 flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.04em] text-note">
           <span>Internal · {outboundName}</span>
           <span className="text-muted">{formatStamp(message.createdAt)}</span>
           <span className="rounded-full border border-note/40 px-2 py-px text-note/90">
@@ -50,7 +50,7 @@ export function MessageBubble({ message, driverName, index = 0 }: MessageBubbleP
           outbound ? "border-amber/25 bg-amber/12" : "border-line bg-panel-raised"
         }`}
       >
-        <div className="mb-1 flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+        <div className="mb-1 flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.04em] text-muted">
           <span className={outbound ? "text-amber" : "text-signal"}>
             {outbound ? `SMS · ${outboundName}` : inboundName}
           </span>

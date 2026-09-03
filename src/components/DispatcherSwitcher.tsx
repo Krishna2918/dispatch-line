@@ -90,7 +90,7 @@ export function DispatcherSwitcher({ staff, roster, onSelect }: Props) {
         <span className="hidden min-w-0 sm:block">
           <span className="block truncate text-[13px] font-medium text-ink">{staff.fullName}</span>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
-            Log in as · {roleLabel(staff.role)}
+            Signed in · {roleLabel(staff.role)}
           </span>
         </span>
         <IconChevron

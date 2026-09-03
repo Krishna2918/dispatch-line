@@ -7,7 +7,7 @@ export default function Home() {
         <header className="enter-up mx-auto flex h-14 w-full max-w-5xl items-center gap-3 rounded-full border border-line bg-panel/90 px-5">
           <span className="size-2 rounded-full bg-amber" aria-hidden />
           <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-amber">
-            Dispatch Line
+            DispatchLine
           </p>
         </header>
       </div>
@@ -30,7 +30,7 @@ export default function Home() {
           style={{ "--enter-delay": "120ms" } as React.CSSProperties}
         >
           Multiple staff see the same driver threads. Drivers never install an
-          app — they just text. Internal notes stay on the desk.
+          app — they text Trans99. Internal notes stay on the desk.
         </p>
 
         <div

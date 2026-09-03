@@ -35,7 +35,7 @@ export function SharedInbox() {
         <span className="size-2 shrink-0 rounded-full bg-amber" aria-hidden />
         <div className="min-w-0 flex-1">
           <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-amber">
-            Dispatch Line
+            DispatchLine
           </p>
           <p className="truncate text-[13px] text-ink">One shared SMS desk</p>
         </div>

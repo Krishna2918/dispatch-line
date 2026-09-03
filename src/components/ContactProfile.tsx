@@ -143,9 +143,14 @@ export function ContactProfile({
       </div>
 
       {driver.notes ? (
-        <p className="mt-5 rounded-[1.5rem] border border-line bg-board/70 px-4 py-3 text-[13px] leading-5 text-muted">
-          {driver.notes}
-        </p>
+        <div className="mt-5">
+          <p className="mb-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+            Desk notes
+          </p>
+          <p className="rounded-[1.5rem] border border-line bg-board/70 px-4 py-3 text-[13px] leading-5 text-muted">
+            {driver.notes}
+          </p>
+        </div>
       ) : null}
 
       {canViewActivity ? (

@@ -18,7 +18,7 @@ export function DemoLogin() {
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-5 py-12">
       <p className="enter-up font-mono text-[11px] uppercase tracking-[0.28em] text-amber">
-        Dispatch Line · Demo
+        DispatchLine · Demo
       </p>
       <h1
         className="enter-up mt-3 text-3xl font-semibold tracking-tight text-ink"

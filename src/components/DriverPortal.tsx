@@ -151,7 +151,7 @@ export function DriverPortal() {
 
         <label className="mb-2 flex items-center gap-2 px-1">
           <span className="shrink-0 text-[11px] text-white/35">
-            demo: switch which driver I am
+            Demo: which driver am I
           </span>
           <select
             value={driver?.id ?? D_JOHN}

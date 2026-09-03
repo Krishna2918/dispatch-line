@@ -34,7 +34,7 @@ export function PresenceBanner({ others }: Props) {
 
   return (
     <div
-      className="mx-4 mt-1 rounded-full border border-amber/35 bg-amber/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-amber"
+      className="mx-4 mt-1 rounded-full border border-amber/35 bg-amber/10 px-4 py-2 font-mono text-[11px] tracking-[0.04em] text-amber"
       role="status"
       data-testid="presence-banner"
     >

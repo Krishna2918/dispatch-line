@@ -26,11 +26,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Dispatch Line",
-    template: "%s · Dispatch Line",
+    default: "DispatchLine",
+    template: "%s · DispatchLine",
   },
   description:
-    "Shared business SMS inbox for a trucking dispatch desk. Drivers stay on native text.",
+    "Shared SMS inbox for a trucking dispatch desk. Drivers text Trans99 — never a dispatcher name.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

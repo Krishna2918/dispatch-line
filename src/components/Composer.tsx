@@ -95,9 +95,9 @@ export function Composer({
           </div>
           <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
             {readOnly
-              ? "Read-only · Safety can view, not send"
+              ? "Read-only — you can view, not send"
               : sms
-                ? `Sends as ${name} · native SMS`
+                ? `Desk shows ${name} · driver sees Trans99`
                 : `Staff only · ${name}`}
           </p>
         </div>

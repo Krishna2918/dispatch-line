@@ -150,7 +150,7 @@ export function InboxFilters({
       <div className="flex flex-wrap gap-1.5">
         {(
           [
-            ["all", "All read"],
+              ["all", "Any"],
             ["unread", "Unread"],
             ["read", "Read"],
           ] as const
